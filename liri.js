@@ -45,47 +45,50 @@ request(queryUrl, function(error, response, body) {
     console.log("Language: " + JSON.parse(body).Language);
     console.log("Plot: " + JSON.parse(body).Plot);
     console.log("Actors: " + JSON.parse(body).Actors);
-
+    
   }
 });
 } else if (action == 'concert-this') {
-
-
-    var queryUrl = "https://rest.bandsintown.com/artists/" + arrInput + "/events?app_id=codingbootcamp";
-console.log(queryUrl);
-
-    request(queryUrl, function(error, response, body) {
-
-        // If the request is successful
-        if (!error && response.statusCode === 200) {
+  
+  
+  var queryUrl = "https://rest.bandsintown.com/artists/" + arrInput + "/events?app_id=codingbootcamp";
+  
+  
+  request(queryUrl, function(error, response, body) {
+    
+    // If the request is successful
+    if (!error && response.statusCode === 200) {
+      
+      
+      console.log("Events for: " + arrInput);
+      console.log("\n----------------------------------------------------------------\n\n\n");
       
           
-
           var concerts = JSON.parse(body);  //had to parse the whole body first
 
-          console.log(concerts[1].venue.name);
-          console.log(concerts[1].venue.city + ", " + concerts[1].venue.region );
+          for (var i = 0; i < concerts.length; i++) {
 
-          var rawDate = concerts[1].datetime;
+          console.log("Venue Name: " + concerts[i].venue.name);
+
+
+          if (concerts[i].venue.region != ""){
+
+          console.log("Venue Location: " + concerts[i].venue.city + ", " + concerts[i].venue.region + "  " + concerts[i].venue.country );
+
+          } else {
+            console.log("Venue Location: " + concerts[i].venue.city + "  " + concerts[i].venue.country );
+          }
+
+
+          var rawDate = concerts[i].datetime;
           var concertDate = moment().year(rawDate.substring(0,4)).month(rawDate.substring(5,7)).day(rawDate.substring(8)).format("MM/DD/YYYY");
+          console.log("Event Date: " + concertDate);
+
+          console.log("\n------------------------------------------------------------------\n\n");
           
+          }
+          //console.log(JSON.parse(body));
           
-
-
-          console.log("Concert Date: " + concertDate);
-          
-          
-
-
-
-          // Name of the venue
-          // Venue location
-          // Date of the Event (use moment to format this as "MM/DD/YYYY")
-
-
-
-
-
         }
       });
 
@@ -93,27 +96,47 @@ console.log(queryUrl);
 
 
 
-
-    // Spotify
-    // .request('https://api.spotify.com/v1/tracks/7yCPwWs66K8Ba5lFuU2bcx')
-    // .then(function(data) {
-    //   console.log(data); 
-    // })
-    // .catch(function(err) {
-    //   console.error('Error occurred: ' + err); 
-    // });
-
-
   
  
 
      
-    spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
+    spotify.search({ type: 'track', query: arrInput }, function(err, data) {
       if (err) {
         return console.log('Error occurred: ' + err);
       }
      
-    console.log(data.tracks.items[0]); 
+    //console.log(data.tracks.items[0]); 
+
+
+    console.log("arr length: " + data.tracks.items.length); 
+    console.log("preview: " + data.tracks.items[0].preview_url); 
+
+    var arrArtists = data.tracks.items[0].artists;
+    //console.log("artists: " )
+
+   console.log("data.tracks.items[0].artists[0].name " , data.tracks.items[0].artists[0].name); 
+    console.log("\n\n------------------------------------------------------\n\n");
+    
+    //console.log("data.tracks: " , data.tracks.items[0].artists); 
+    //console.log("\n\n------------------------------------------------------\n\n");
+
+    // console.log("data.tracks.items[0] " , data.tracks.items[0]);
+    // console.log("\n\n------------------------------------------------------\n\n");
+    
+    // console.log("data.tracks.items[0].artists " , data.tracks.items[1].artists); 
+    // console.log("\n\n------------------------------------------------------\n\n");
+
+    console.log("preview: " + data.tracks.items[0].preview_url); 
+     for (var i = 0; i < data.tracks.items.length; i++){
+
+      console.log("Artist:       "  , data.tracks.items[i].artists[0].name);
+      console.log("Song:         "  , arrInput);
+      console.log("Preview Link: "  ,data.tracks.items[i].preview_url); 
+      console.log("Album:        "  , data.tracks.items[i].name);
+
+      console.log("\n\n-------------------------------------------------------------------------------------------------------\n\n");
+     }
+
     });
 
 
