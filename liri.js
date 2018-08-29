@@ -47,13 +47,27 @@ if (action == "movie-this"){
     console.log("raw data: " + data);
   
     // Then split it by commas (to make it more readable)
-    var dataArr = data.slice(0);
-    console.log("dataArr: " + dataArr);
+  
     
-    var action
     
 
+    var separateAt = data.search(",");
+    var randomAction = data.slice(0,separateAt);
+    var arrInput = data.slice(separateAt + 1);
+
+    if (randomAction == "movie-this"){
+
+      findMovie(arrInput);
+  
+  } else if (randomAction == 'concert-this') {
     
+      findBand(arrInput);
+  
+  } else if (randomAction == 'spotify-this-song') {
+  
+       findSong(arrInput);
+  
+  }   
 
 
     // We will then re-display the content as an array for later use.
