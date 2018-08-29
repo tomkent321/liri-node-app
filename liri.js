@@ -5,21 +5,8 @@ var spotify = new Spotify(keys.spotify);
 var request = require("request");
 var fs = require("fs");
 var moment = require("moment");
-
-var randomMovie = false;
-var randomBand = false;
-var randomSong = false;
-var randomInfo = "";
-
-
-//get user input
-
 var action = process.argv[2];
 var arrInput = (process.argv.slice(3)).join(" ");
-
-// console.log("action " + action);
-// console.log("arrInput " + arrInput);
-
 
 
 if (action == "movie-this"){
@@ -40,14 +27,11 @@ if (arrInput == ""){
   arrInput = "Mr. Nobody";
 } 
 
-
 var queryUrl = "http://www.omdbapi.com/?t=" + arrInput + "&y=&plot=short&tomatoes=true&apikey=trilogy";
 
 request(queryUrl, function(error, response, body) {
 
 if (!error && response.statusCode === 200) {
-
-
 
 console.log("Title: " + JSON.parse(body).Title);
 console.log("Release Year: " + JSON.parse(body).Year);
@@ -72,13 +56,9 @@ fs.appendFile('log.txt', textToLog, function (err) {
   if (err) return console.log(err);
   
 });
-
 }
-
 });
-
 textToLog = "";
-
 }
 
 function findBand(arrInput) {
@@ -95,7 +75,6 @@ function findBand(arrInput) {
 
       console.log("Events for: " + arrInput);
       console.log("\n----------------------------------------------------------------\n\n\n");
-      
           
           var concerts = JSON.parse(body);  //had to parse the whole body first
 
@@ -115,7 +94,6 @@ function findBand(arrInput) {
 
             textToLog += "\nVenue Location: " + concerts[i].venue.city + "  " + concerts[i].venue.country;
           }
-
           var rawDate = concerts[i].datetime;
           var concertDate = moment().year(rawDate.substring(0,4)).month(rawDate.substring(5,7)).day(rawDate.substring(8)).format("MM/DD/YYYY");
           console.log("Event Date: " + concertDate);
@@ -127,11 +105,8 @@ function findBand(arrInput) {
           
           fs.appendFile('log.txt', textToLog, function (err) {
             if (err) return console.log(err);
-            
          });
-
          textToLog = "";
-
         }
       });
   }
@@ -162,19 +137,15 @@ function findSong(arrInput){
   
     fs.appendFile('log.txt', textToLog, function (err) {
       if (err) return console.log(err);
-      
    });
-   
    textToLog = "";
-  
-  
   }
 
   });
 
   }
 
-
+//works with all functions
 function doTextInstruct() {
 
   fs.readFile("random.txt", "utf8", function(error, data) {
@@ -196,9 +167,6 @@ function doTextInstruct() {
   }   
   
   });
-
-
-
  }
 
 
